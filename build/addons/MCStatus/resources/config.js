@@ -7,15 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { IsDefined, ValidateNested } from 'class-validator';
+import { IsDefined, IsNumber, IsPositive, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { MessageValidator } from '../../../index.js';
-export default class DefaultConfig {
-    message;
+class ServerConfig {
+    id;
+    address;
+    port;
 }
 __decorate([
     IsDefined(),
-    ValidateNested(),
-    Type(() => MessageValidator),
-    __metadata("design:type", MessageValidator)
-], DefaultConfig.prototype, "message", void 0);
+    IsString(),
+    __metadata("design:type", String)
+], ServerConfig.prototype, "id", void 0);
+__decorate([
+    IsDefined(),
+    IsString(),
+    __metadata("design:type", String)
+], ServerConfig.prototype, "address", void 0);
+__decorate([
+    IsDefined(),
+    IsNumber(),
+    IsPositive(),
+    __metadata("design:type", Number)
+], ServerConfig.prototype, "port", void 0);
+export default class DefaultConfig {
+    servers;
+}
+__decorate([
+    IsDefined(),
+    ValidateNested({ each: true }),
+    Type(() => ServerConfig),
+    __metadata("design:type", Array)
+], DefaultConfig.prototype, "servers", void 0);
